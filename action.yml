@@ -1,12 +1,8 @@
 name: 'Setup Environment'
 description: 'Setup the CI environment for use'
-
-inputs:
 outputs:
   runner:
     description: "Which environment the action should target"
-  
-
 runs:
   using: composite
   steps:
