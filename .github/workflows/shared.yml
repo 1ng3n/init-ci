@@ -4,6 +4,9 @@ name: CI
 
 on:
   workflow_call:
+    outputs:
+      runner: 
+        value: ${{ jobs.setup.outputs.runner }}
 
 jobs:
   setup:
