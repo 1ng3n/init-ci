@@ -3,10 +3,12 @@ description: 'Setup the CI environment for use'
 outputs:
   runner:
     description: "Which environment the action should target"
+    value: ${{ steps.runner-selection.outputs.runner }}
 runs:
   using: composite
   steps:
     - name: "Setup the environment"
+      id: runner-selection
       shell: bash
       run: |
         if [ ${{ github.ref }} == 'refs/heads/main' ]; then
