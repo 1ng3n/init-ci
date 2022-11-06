@@ -1,40 +1,19 @@
-name: 'Wiz IaC Scan'
-description: 'Simple IaC Wiz Scan'
+name: 'Setup Environment'
+description: 'Setup the CI environment for use'
 
 inputs:
-  scan_path:
-    required: false
-    description: 'Optional path to the source code to scan'
-    default: '.'
-  policy:
-    required: false
-    description: 'Desired Wiz-cli policy to use'
-    default: 'Default IaC policy'
-  wiz_client_id:
-    required: true
-    description: 'Wiz Client ID'
-  wiz_client_secret:
-    required: true
-    description: 'Wiz Client Secret Key'
+outputs:
+  runner:
+    description: "Which environment the action should target"
+  
 
 runs:
   using: composite
   steps:
-    - name: Check out repository
-      uses: NYDIG/.github/actions/nydig-checkout@v1.2.97
-
-    - name: Download Wiz-cli
-      run: curl -o wizcli https://wizcli.app.wiz.io/wizcli && chmod +x wizcli
-      shell: bash
-
-    - name: Authenticate to Wiz
-      run: ./wizcli auth --id "$WIZ_CLIENT_ID" --secret "$WIZ_CLIENT_SECRET"
-      shell: bash
-      env:
-        WIZ_CLIENT_ID: ${{ inputs.wiz_client_id }}
-        WIZ_CLIENT_SECRET: ${{ inputs.wiz_client_secret }}
-
-    - name: Run wiz-cli IaC scan
-      id: scan
-      run: ./wizcli iac scan --path /home/runner/work/${{ inputs.scan_path }} --policy "${{ inputs.policy }}"
-      shell: bash
+    - name: "Setup the environment"
+      run: |
+        if [ ${{ github.ref }} == 'refs/heads/main' ]; then
+          echo "::set-output name=runner::ubuntu-latest"
+        else
+          echo "::set-output name=runner::macos-latest"
+        fi
