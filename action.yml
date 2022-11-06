@@ -5,6 +5,7 @@ outputs:
     description: "Which environment the action should target"
     value: ${{ steps.runner-selection.outputs.runner }}
 runs:
+  runs-on: [ubuntu-latest]
   using: composite
   steps:
     - name: "Setup the environment"
